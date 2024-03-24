@@ -16,6 +16,7 @@ function Booking() {
                 <AutocompleteAddress />
                 <Options />
                 <Cards />
+                <button className='w-full bg-purple-400 p-1 rounded-md mt-4'>Book</button>
             </div>
         </div>
     )
