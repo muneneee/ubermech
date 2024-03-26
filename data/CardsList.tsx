@@ -5,22 +5,22 @@ export default[
         image:'/master.png'
     },
     {
-        id:1,
+        id:2,
         name:'Visa Card',
         image:'/visa.png'
     },
     {
-        id:1,
+        id:3,
         name:'Apple Pay',
         image:'/apple.png'
     },
     {
-        id:1,
+        id:4,
         name:'Google Pay',
         image:'/google.png'
     },
     {
-        id:1,
+        id:5,
         name:'Cash',
         image:'/cash.jpeg'
     }

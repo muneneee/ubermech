@@ -8,7 +8,7 @@ export async function GET(request:any) {
 
     const searchText=searchParams.get('q');
 
-    const res=await fetch(BASE_URL+'?q='+searchText+'?language=en&limit=7&session_token=5ccce4a4-ab0a-4a7c-943d-580e55542363&country=KE'
+    const res=await fetch(BASE_URL+'?q='+searchText+'?language=en&limit=7&session_token=5ccce4a4-ab0a-4a7c-943d-580e55542363&country=US'
     +"&access_token="+process.env.MAPBOX_ACCESS_TOKEN,
     {
         headers:{

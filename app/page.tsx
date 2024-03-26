@@ -5,6 +5,8 @@ import MapBoxMap from "@/components/Map/MapBoxMap";
 import { UserLocationContext } from "@/context/UserLocationContext";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import {NextUIProvider} from "@nextui-org/react";
+
 
 export default function Home() {
 
@@ -25,17 +27,20 @@ export default function Home() {
 
 
   return (
-    <div>
-      <UserLocationContext.Provider value={{userLocation, setUserLocation}}>
-        <div className="grid grid-cols-1 md:grid-cols-3">
-          <div>
-            <Booking />
+    <NextUIProvider>
+      <div>
+        <UserLocationContext.Provider value={{userLocation, setUserLocation}}>
+          <div className="grid grid-cols-1 md:grid-cols-3">
+            <div>
+              <Booking />
+            </div>
+            <div className="col-span-2">
+              <MapBoxMap />
+            </div>
           </div>
-          <div className="col-span-2">
-            <MapBoxMap />
-          </div>
-        </div>
-      </UserLocationContext.Provider>
-    </div>
+        </UserLocationContext.Provider>
+      </div>
+    </NextUIProvider>
+    
   );
 }
