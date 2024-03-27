@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { DestinationCordiContext } from "@/context/DestinationCordiContext";
+import { SourceCordiContext } from "@/context/SourceCordiContext";
+import React, { useContext, useEffect, useState } from "react";
 
 const session_token = '5ccce4a4-ab0a-4a7c-943d-580e55542363';
 const MAPBOX_RETRIEVE_URL = 'https://api.mapbox.com/search/searchbox/v1/retrieve/';
@@ -21,8 +23,8 @@ const AutocompleteAddress: React.FC<AutocompleteProps> = ({ onSelectSuggestion }
   const [destinationList, setDestinationList] = useState<({ searchResults: { suggestions: Suggestion[] } }) | null>(null);
 
   const [isLoading, setIsLoading] = useState(false); // Track loading state
-  const [sourceCoordinates, setSourceCoordinates] = useState<any>([]);
-  const [destinationCoordinates, setDestinationCoordinates] = useState<any>([]);
+  const {sourceCoordinates, setSourceCoordinates} = useContext(SourceCordiContext);
+  const {destinationCoordinates, setDestinationCoordinates} = useContext(DestinationCordiContext);
 
 
   useEffect(() => {
@@ -70,12 +72,14 @@ const AutocompleteAddress: React.FC<AutocompleteProps> = ({ onSelectSuggestion }
   }, [source, destination]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.name === "whereFrom") {
       setSource(event.target.value);
-    } else if (event.target.name === "whereTo") {
-      setDestination(event.target.value);
-    }
+  
     setAddressList(null);
+  };
+
+  const handleDestinationInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDestination(event.target.value);
+    
     setDestinationList(null); // Clear suggestions on new search
   };
 
@@ -140,7 +144,7 @@ const AutocompleteAddress: React.FC<AutocompleteProps> = ({ onSelectSuggestion }
           type="text"
           className="bg-white p-1 border-[1px] w-full rounded-md outline-none focus:border-purple-400"
           value={destination}
-          onChange={handleInputChange}
+          onChange={handleDestinationInputChange}
           name="whereTo"
         />
          {isLoading && <p>Loading suggestions...</p>}
