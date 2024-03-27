@@ -7,6 +7,8 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import Markers from './Markers';
 import { DestinationCordiContext } from '@/context/DestinationCordiContext';
 import { SourceCordiContext } from '@/context/SourceCordiContext';
+import { DirectionDataContext } from '@/context/DirectionDataContext';
+import MapBoxRoute from './MapBoxRoute';
 
 const MAPBOX_DRIVING_ENDPOINT="https://api.mapbox.com/directions/v5/mapbox/driving/"
 const session_token="5ccce4a4-ab0a-4a7c-943d-580e55542363";
@@ -20,6 +22,7 @@ function MapBoxMap() {
 
 
   const {userLocation,setUserLocation}=useContext(UserLocationContext)
+  const {directionData, setDirectionData}=useContext(DirectionDataContext);
 
   //used to fly to destination markers location
 
@@ -62,6 +65,7 @@ function MapBoxMap() {
       );
       const result=await res.json();
       console.log(result);
+      setDirectionData(result);
   }
 
   return (
@@ -80,6 +84,11 @@ function MapBoxMap() {
                 mapStyle="mapbox://styles/mapbox/streets-v9"
             >
             <Markers />
+            {directionData?.routes? (
+              <MapBoxRoute 
+                coordinates={directionData?.routes[0]?.geometry?.coordinates}
+              />
+            ) : null}
               
             </Map>:null}
          </div>
