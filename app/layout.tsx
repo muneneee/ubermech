@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
-import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import NavBar from "@/components/NavBar";
 
 
-const outfit = Outfit({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "UberMech",
@@ -21,8 +18,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={outfit.className}>
-          <NavBar />
+        <body>
           {children}</body>
       </html>
     </ClerkProvider>
