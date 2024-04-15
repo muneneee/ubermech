@@ -52,7 +52,7 @@ export default function FAQ() {
             id="panel1d-header"
           >
             <Typography component="h3" variant="subtitle2">
-              How do I contact customer support if I have a question or issue?
+            What should I do if I have a flat tire?
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -61,10 +61,7 @@ export default function FAQ() {
               gutterBottom
               sx={{ maxWidth: { sm: '100%', md: '70%' } }}
             >
-              You can reach our customer support team by emailing
-              <Link> support@email.com </Link>
-              or calling our toll-free number. We&apos;re here to assist you
-              promptly.
+              If you have a flat tire, safely pull over to the side of the road. Turn on your hazard lights and set up warning triangles or flares if available. Locate your spare tire, jack, and lug wrench in the trunk. Follow the instructions in your owner's manual to safely change the tire. If you're unsure or uncomfortable changing the tire yourself, contact roadside assistance for help.
             </Typography>
           </AccordionDetails>
         </Accordion>
@@ -78,7 +75,7 @@ export default function FAQ() {
             id="panel2d-header"
           >
             <Typography component="h3" variant="subtitle2">
-              Can I return the product if it doesn&apos;t meet my expectations?
+            My car battery is dead. What should I do?
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -87,9 +84,7 @@ export default function FAQ() {
               gutterBottom
               sx={{ maxWidth: { sm: '100%', md: '70%' } }}
             >
-              Absolutely! We offer a hassle-free return policy. If you&apos;re not
-              completely satisfied, you can return the product within [number of
-              days] days for a full refund or exchange.
+               If your car battery is dead, you can try jump-starting your vehicle using jumper cables and a working vehicle. Follow the instructions in your owner's manual for the correct procedure. If you're unsure or uncomfortable jump-starting the vehicle, contact roadside assistance for help. They can safely jump-start your car or provide a battery replacement if needed.
             </Typography>
           </AccordionDetails>
         </Accordion>
@@ -103,7 +98,7 @@ export default function FAQ() {
             id="panel3d-header"
           >
             <Typography component="h3" variant="subtitle2">
-              What makes your product stand out from others in the market?
+              I've locked my keys inside my car. What should I do?
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -112,9 +107,7 @@ export default function FAQ() {
               gutterBottom
               sx={{ maxWidth: { sm: '100%', md: '70%' } }}
             >
-              Our product distinguishes itself through its adaptability, durability,
-              and innovative features. We prioritize user satisfaction and
-              continually strive to exceed expectations in every aspect.
+               If you've accidentally locked your keys inside your car, don't panic. Check if any doors or windows are unlocked. If not, contact roadside assistance for assistance with unlocking your vehicle. They have specialized tools to safely unlock car doors without causing damage.
             </Typography>
           </AccordionDetails>
         </Accordion>
@@ -128,7 +121,7 @@ export default function FAQ() {
             id="panel4d-header"
           >
             <Typography component="h3" variant="subtitle2">
-              Is there a warranty on the product, and what does it cover?
+            My car's engine is overheating. What should I do?
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
@@ -137,10 +130,7 @@ export default function FAQ() {
               gutterBottom
               sx={{ maxWidth: { sm: '100%', md: '70%' } }}
             >
-              Yes, our product comes with a [length of warranty] warranty. It covers
-              defects in materials and workmanship. If you encounter any issues
-              covered by the warranty, please contact our customer support for
-              assistance.
+              If your car's engine is overheating, pull over to a safe location and turn off the engine immediately. Let the engine cool down before attempting to open the hood. Check the coolant level and top it off if necessary (after the engine has cooled). If you're unsure about handling the situation, contact roadside assistance for help. Driving with an overheating engine can cause severe damage to your vehicle.
             </Typography>
           </AccordionDetails>
         </Accordion>

@@ -34,7 +34,7 @@ function MapBoxMap() {
         duration:2500
       })
     }
-    if(SourceCordiContext&&destinationCoordinates){
+    if(SourceCordiContext&&DestinationCordiContext){
       getDirectionRoute();
     }
   },[sourceCoordinates])
@@ -46,6 +46,9 @@ function MapBoxMap() {
         center:[destinationCoordinates.lng, destinationCoordinates.lat],
         duration:2500
       })
+    }
+    if(SourceCordiContext&&DestinationCordiContext){
+      getDirectionRoute();
     }
   },[destinationCoordinates]);
 

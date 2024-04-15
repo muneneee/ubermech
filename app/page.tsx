@@ -27,6 +27,7 @@ import Testimonials from '@/components/Testimonials';
 import FAQ from '@/components/FAQ';
 import Footer from '@/components/Footer';
 import getLPTheme from './getLPTheme';
+import ChatBot from '@/components/ChatBot';
 
 interface ToggleCustomThemeProps {
   showCustomTheme: Boolean;
@@ -123,6 +124,7 @@ export default function Home() {
             <Box sx={{ bgcolor: 'background.default' }}>
               <LogoCollection />
               <Features />
+
               <Divider />
               <Testimonials />
               <Divider />

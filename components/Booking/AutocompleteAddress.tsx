@@ -14,74 +14,83 @@ interface Suggestion {
 
 interface AutocompleteProps {
   onSelectSuggestion?: (suggestion: Suggestion) => void; // Optional callback for handling selected suggestion
+  onSelectDestination?: (destination: Suggestion) => void; // Optional callback for handling selected suggestion
+
 }
 
 const AutocompleteAddress: React.FC<AutocompleteProps> = ({ onSelectSuggestion }) => {
   const [source, setSource] = useState<string>("");
-  const [destination, setDestination] = useState<string>("");
+  const [dest, setDest] = useState<string>("");
   const [addressList, setAddressList] = useState<({ searchResults: { suggestions: Suggestion[] } }) | null>(null);
   const [destinationList, setDestinationList] = useState<({ searchResults: { suggestions: Suggestion[] } }) | null>(null);
 
   const [isLoading, setIsLoading] = useState(false); // Track loading state
-  const {sourceCoordinates, setSourceCoordinates} = useContext(SourceCordiContext);
-  const {destinationCoordinates, setDestinationCoordinates} = useContext(DestinationCordiContext);
+  const { sourceCoordinates, setSourceCoordinates } = useContext(SourceCordiContext);
+  const { destinationCoordinates, setDestinationCoordinates } = useContext(DestinationCordiContext);
 
+  const handleInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSource(event.target.value);
+    if (source.length > 0) {
+      setIsLoading(true);
+      const sourcePromise = fetch(`api/search-address?q=${source}`);
+      const [sourceResponse] = await Promise.all([sourcePromise]);
 
-  useEffect(() => {
-    const debounceFn = setTimeout(async () => {
-      if (source.length > 0) {
-        // Fetch suggestions for "Where From?"
-        setIsLoading(true);
-        const response = await fetch(`api/search-address?q=${source}`);
-        if (!response.ok) {
-          console.error("Error fetching address suggestions:", response.statusText);
-          setIsLoading(false);
-          return;
-        }
-
-        const result = await response.json();
-        const suggestions = result.searchResults.suggestions.map((suggestion: { name: any; place_formatted: any; full_address: any; mapbox_id: any; }) => ({
-          name: suggestion.name,
-          place_formatted: suggestion.place_formatted,
-          full_address: suggestion.full_address,
-          mapbox_id: suggestion.mapbox_id
-        }));
-        setAddressList({ searchResults: { suggestions } });
-      } else if (destination.length > 0) {
-        setIsLoading(true);
-        const response = await fetch(`api/search-address?q=${destination}`);
-        if (!response.ok) {
-          console.error("Error fetching destination suggestions:", response.statusText);
-          setIsLoading(false);
-          return;
-        }
-
-        const result = await response.json();
-        const suggestions = result.searchResults.suggestions.map((suggestion: { name: any; place_formatted: any; full_address: any; mapbox_id: any; }) => ({
-          name: suggestion.name,
-          place_formatted: suggestion.place_formatted,
-          full_address: suggestion.full_address,
-          mapbox_id: suggestion.mapbox_id
-        }));
-        setDestinationList({ searchResults: { suggestions } });
+      if (!sourceResponse.ok) {
+        throw new Error(`Error fetching suggestions for '${source}': ${sourceResponse.statusText}`);
       }
-      setIsLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(debounceFn);
-  }, [source, destination]);
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSource(event.target.value);
-  
-    setAddressList(null);
+      try {
+        const sourceResult = await sourceResponse.json();
+        
+        
+        const sourceSuggestions = sourceResult.searchResults.suggestions.map((suggestion: { name: any; place_formatted: any; full_address: any; mapbox_id: any; }) => ({
+          name: suggestion.name,
+          place_formatted: suggestion.place_formatted,
+          full_address: suggestion.full_address,
+          mapbox_id: suggestion.mapbox_id,
+        }));
+        setAddressList({ searchResults: { suggestions: sourceSuggestions } });
+      } catch (error) {
+        console.error("Error fetching suggestions:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      setAddressList(null);
+    }
   };
 
-  const handleDestinationInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDestination(event.target.value);
-    
-    setDestinationList(null); // Clear suggestions on new search
+  const handleDestinationInputChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const desti =event.target.value;
+    setDest(desti);
+    if (dest.length > 0) {
+      setIsLoading(true);
+      const destinationPromise = fetch(`api/search-address?q=${dest}`);
+      const [destinationResponse] = await Promise.all([destinationPromise]);
+
+      if (!destinationResponse.ok) {
+        throw new Error(`Error fetching suggestions for '${dest}': ${destinationResponse.statusText}`);
+      }
+      try {
+        const destinationResult = await destinationResponse.json();
+        
+        const destinationSuggestions = destinationResult.searchResults.suggestions.map((destination: { name: any; place_formatted: any; full_address: any; mapbox_id: any; }) => ({
+          name: destination.name,
+          place_formatted: destination.place_formatted,
+          full_address: destination.full_address,
+          mapbox_id: destination.mapbox_id,
+        }));
+        setDestinationList({ searchResults: { suggestions: destinationSuggestions } });
+      } catch (error) {
+        console.error("Error fetching suggestions:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      setDestinationList(null);
+    }
   };
+
+
 
   const handleSuggestionClick = async (suggestion: Suggestion) => {
     setSource(`${suggestion.name} ${suggestion.place_formatted}`);
@@ -99,20 +108,20 @@ const AutocompleteAddress: React.FC<AutocompleteProps> = ({ onSelectSuggestion }
    
   };
 
-  const handleDestinationClick = async (suggestion: Suggestion) => {
-    setDestination(`${suggestion.name} ${suggestion.place_formatted}`);
-    setAddressList(null);
+  const handleDestinationClick = async (destination: Suggestion) => {
+    setDest(`${destination.name} ${destination.place_formatted}`);
+    setDestinationList(null);
   
-    const res=await fetch(MAPBOX_RETRIEVE_URL+suggestion.mapbox_id+"?session_token="+session_token+"&access_token="+process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN)
+    const resp=await fetch(MAPBOX_RETRIEVE_URL+destination.mapbox_id+"?session_token="+session_token+"&access_token="+process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN)
 
-    const result=await res.json();
+    const resultDest=await resp.json();
 
     setDestinationCoordinates({
-      lng:result.features[0].geometry.coordinates[0],
-      lat:result.features[0].geometry.coordinates[1],
+      lng:resultDest.features[0].geometry.coordinates[0],
+      lat:resultDest.features[0].geometry.coordinates[1],
     })
 
-    console.log(result);
+    console.log(resultDest);
    
   };
 
@@ -143,16 +152,16 @@ const AutocompleteAddress: React.FC<AutocompleteProps> = ({ onSelectSuggestion }
         <input
           type="text"
           className="bg-white p-1 border-[1px] w-full rounded-md outline-none focus:border-purple-400"
-          value={destination}
+          value={dest}
           onChange={handleDestinationInputChange}
           name="whereTo"
         />
          {isLoading && <p>Loading suggestions...</p>}
         {destinationList && destinationList.searchResults.suggestions.length > 0 && (
           <ul>
-            {destinationList.searchResults.suggestions.map((suggestion, index) => (
-              <li key={index} onClick={() => handleDestinationClick(suggestion)} className="p-3 hover:bg-gray-100 cursor-pointer">
-                {suggestion.name} - {suggestion.place_formatted}
+            {destinationList.searchResults.suggestions.map((destination, index) => (
+              <li key={index} onClick={() => handleDestinationClick(destination)} className="p-3 hover:bg-gray-100 cursor-pointer">
+                {destination.name} - {destination.place_formatted}
               </li>
             ))}
           </ul>
